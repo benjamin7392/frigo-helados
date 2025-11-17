@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 // Configurar CORS - permitir todos los orígenes en desarrollo
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://frigo-helados.netlify.app', 'capacitor://localhost', 'ionic://localhost']
+    ? ['https://heladeria-frigo.netlify.app', 'capacitor://localhost', 'ionic://localhost']
     : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],

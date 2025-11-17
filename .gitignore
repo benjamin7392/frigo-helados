@@ -8,3 +8,6 @@ frontend/ios/
 backend/.env
 .DS_Store
 *.log
+
+# Local Netlify folder
+.netlify
