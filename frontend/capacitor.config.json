@@ -1,0 +1,17 @@
+{
+  "appId": "com.frigo.helados",
+  "appName": "Heladeria Frigo",
+  "webDir": "dist",
+  "server": {
+    "url": "http://192.168.1.42:5173",
+    "cleartext": true,
+    "androidScheme": "http"
+  },
+  "android": {
+    "allowMixedContent": true
+  },
+  "ios": {
+    "contentInset": "always",
+    "allowsLinkPreview": false
+  }
+}

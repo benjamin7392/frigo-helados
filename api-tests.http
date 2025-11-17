@@ -1,0 +1,224 @@
+### Variables
+@baseUrl = http://localhost:4000/api
+@token = tu_token_aqui
+
+### ========================================
+### 1. REGISTRAR USUARIO (Solo primera vez)
+### ========================================
+POST {{baseUrl}}/usuarios/registro
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo Usuario",
+  "email": "nuevo@frigo.com",
+  "password": "123456",
+  "rol": "vendedor"
+}
+
+### ========================================
+### 2. LOGIN - ADMIN
+### ========================================
+POST {{baseUrl}}/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "admin@frigo.com",
+  "password": "123456"
+}
+
+### ========================================
+### 3. LOGIN - VENDEDOR
+### ========================================
+POST {{baseUrl}}/usuarios/login
+Content-Type: application/json
+
+{
+  "email": "vendedor@frigo.com",
+  "password": "123456"
+}
+
+### ========================================
+### 4. OBTENER PERFIL
+### ========================================
+GET {{baseUrl}}/usuarios/perfil
+Authorization: Bearer {{token}}
+
+### ========================================
+### 5. LISTAR TODOS LOS USUARIOS (Admin)
+### ========================================
+GET {{baseUrl}}/usuarios
+Authorization: Bearer {{token}}
+
+### ========================================
+### 6. LISTAR TODOS LOS PRODUCTOS
+### ========================================
+GET {{baseUrl}}/productos
+Authorization: Bearer {{token}}
+
+### ========================================
+### 7. LISTAR SOLO HELADOS
+### ========================================
+GET {{baseUrl}}/productos?tipo=helado
+Authorization: Bearer {{token}}
+
+### ========================================
+### 8. LISTAR SOLO INSUMOS
+### ========================================
+GET {{baseUrl}}/productos?tipo=insumo
+Authorization: Bearer {{token}}
+
+### ========================================
+### 9. PRODUCTOS CON STOCK BAJO
+### ========================================
+GET {{baseUrl}}/productos/stock-bajo
+Authorization: Bearer {{token}}
+
+### ========================================
+### 10. CREAR NUEVO PRODUCTO
+### ========================================
+POST {{baseUrl}}/productos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Menta Granizada",
+  "tipo": "helado",
+  "sabor": "Menta",
+  "categoria": "crema",
+  "precio": 2400,
+  "stock": 30,
+  "unidadMedida": "kg",
+  "stockMinimo": 8,
+  "descripcion": "Helado de menta con chips de chocolate"
+}
+
+### ========================================
+### 11. AJUSTAR STOCK (Agregar)
+### ========================================
+# Primero obtén el ID de un producto de la lista
+POST {{baseUrl}}/productos/TU_PRODUCTO_ID/ajustar-stock
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cantidad": 20,
+  "motivo": "compra",
+  "notas": "Reposición semanal"
+}
+
+### ========================================
+### 12. AJUSTAR STOCK (Reducir por merma)
+### ========================================
+POST {{baseUrl}}/productos/TU_PRODUCTO_ID/ajustar-stock
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cantidad": -5,
+  "motivo": "merma",
+  "notas": "Producto vencido o dañado"
+}
+
+### ========================================
+### 13. CREAR VENTA
+### ========================================
+# Primero obtén IDs de productos de la lista
+POST {{baseUrl}}/ventas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "productos": [
+    {
+      "producto": "ID_DEL_PRODUCTO_1",
+      "cantidad": 2
+    },
+    {
+      "producto": "ID_DEL_PRODUCTO_2",
+      "cantidad": 1
+    }
+  ],
+  "metodoPago": "efectivo",
+  "cliente": "Cliente de prueba",
+  "notas": "Venta de prueba"
+}
+
+### ========================================
+### 14. LISTAR VENTAS
+### ========================================
+GET {{baseUrl}}/ventas
+Authorization: Bearer {{token}}
+
+### ========================================
+### 15. VENTAS DE HOY
+### ========================================
+GET {{baseUrl}}/ventas?fechaInicio=2025-11-15&fechaFin=2025-11-16
+Authorization: Bearer {{token}}
+
+### ========================================
+### 16. REPORTE DE VENTAS
+### ========================================
+GET {{baseUrl}}/ventas/reportes/resumen
+Authorization: Bearer {{token}}
+
+### ========================================
+### 17. REPORTE DE VENTAS CON FECHAS
+### ========================================
+GET {{baseUrl}}/ventas/reportes/resumen?fechaInicio=2025-11-01&fechaFin=2025-11-30
+Authorization: Bearer {{token}}
+
+### ========================================
+### 18. MOVIMIENTOS DE STOCK
+### ========================================
+GET {{baseUrl}}/movimientos-stock
+Authorization: Bearer {{token}}
+
+### ========================================
+### 19. MOVIMIENTOS DE UN PRODUCTO
+### ========================================
+GET {{baseUrl}}/movimientos-stock/producto/TU_PRODUCTO_ID
+Authorization: Bearer {{token}}
+
+### ========================================
+### 20. ESTADÍSTICAS DE MOVIMIENTOS
+### ========================================
+GET {{baseUrl}}/movimientos-stock/estadisticas
+Authorization: Bearer {{token}}
+
+### ========================================
+### 21. OBTENER DETALLE DE VENTA
+### ========================================
+GET {{baseUrl}}/ventas/TU_VENTA_ID
+Authorization: Bearer {{token}}
+
+### ========================================
+### 22. CANCELAR VENTA (Devuelve el stock)
+### ========================================
+PUT {{baseUrl}}/ventas/TU_VENTA_ID/cancelar
+Authorization: Bearer {{token}}
+
+### ========================================
+### 23. ACTUALIZAR PRODUCTO
+### ========================================
+PUT {{baseUrl}}/productos/TU_PRODUCTO_ID
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "precio": 2800,
+  "stockMinimo": 15
+}
+
+### ========================================
+### 24. DESACTIVAR PRODUCTO
+### ========================================
+DELETE {{baseUrl}}/productos/TU_PRODUCTO_ID
+Authorization: Bearer {{token}}
+
+### ========================================
+### NOTAS:
+### 1. Primero haz login (request #2 o #3) y copia el token
+### 2. Reemplaza {{token}} arriba con tu token real
+### 3. Para los requests que necesitan IDs, primero lista los productos/ventas
+### 4. Copia los IDs necesarios y reemplázalos en los endpoints
+### ========================================
