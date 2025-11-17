@@ -1,7 +1,6 @@
 const Venta = require('../models/Venta');
-const Producto = require('../models/Producto');
-const MovimientoStock = require('../models/MovimientoStock');
 const mongoose = require('mongoose');
+const { validarYDescontarStock, registrarMovimientoStock, devolverStock } = require('../utils/ventaHelpers');
 
 // @desc    Crear nueva venta
 // @route   POST /api/ventas
@@ -22,31 +21,17 @@ exports.crearVenta = async (req, res) => {
     let total = 0;
     const productosVenta = [];
 
-    // Procesar cada producto
+    // Procesar cada producto usando helpers
     for (const item of productos) {
-      const producto = await Producto.findById(item.producto).session(session);
-      
-      if (!producto) {
+      let producto, stockAnterior, subtotal;
+      try {
+        ({ producto, stockAnterior, subtotal } = await validarYDescontarStock(item.producto, item.cantidad, session));
+      } catch (err) {
         await session.abortTransaction();
-        return res.status(404).json({ mensaje: `Producto ${item.producto} no encontrado` });
+        return res.status(400).json({ mensaje: err.message });
       }
 
-      if (producto.stock < item.cantidad) {
-        await session.abortTransaction();
-        return res.status(400).json({ 
-          mensaje: `Stock insuficiente para ${producto.nombre}. Disponible: ${producto.stock}` 
-        });
-      }
-
-      // Calcular subtotal
-      const subtotal = item.cantidad * producto.precio;
       total += subtotal;
-
-      // Reducir stock
-      const stockAnterior = producto.stock;
-      producto.stock -= item.cantidad;
-      await producto.save({ session });
-
       productosVenta.push({
         producto: producto._id,
         nombre: producto.nombre,
@@ -55,8 +40,8 @@ exports.crearVenta = async (req, res) => {
         subtotal
       });
 
-      // Registrar movimiento de stock
-      await MovimientoStock.create([{
+      // Registrar movimiento de stock con helper
+      await registrarMovimientoStock({
         producto: producto._id,
         tipo: 'salida',
         cantidad: item.cantidad,
@@ -64,7 +49,7 @@ exports.crearVenta = async (req, res) => {
         stockNuevo: producto.stock,
         motivo: 'venta',
         usuario: req.usuario._id
-      }], { session });
+      }, session);
     }
 
     // Crear venta
@@ -160,16 +145,12 @@ exports.cancelarVenta = async (req, res) => {
       return res.status(400).json({ mensaje: 'La venta ya está cancelada' });
     }
 
-    // Devolver stock
-    for (const item of venta.productos) {
-      const producto = await Producto.findById(item.producto).session(session);
-      if (producto) {
-        const stockAnterior = producto.stock;
-        producto.stock += item.cantidad;
-        await producto.save({ session });
 
-        // Registrar movimiento
-        await MovimientoStock.create([{
+    // Devolver stock usando helpers
+    for (const item of venta.productos) {
+      try {
+        const { producto, stockAnterior } = await devolverStock(item.producto, item.cantidad, session);
+        await registrarMovimientoStock({
           producto: producto._id,
           tipo: 'entrada',
           cantidad: item.cantidad,
@@ -180,7 +161,10 @@ exports.cancelarVenta = async (req, res) => {
           referenciaModelo: 'Venta',
           usuario: req.usuario._id,
           notas: 'Devolución por cancelación de venta'
-        }], { session });
+        }, session);
+      } catch (err) {
+        await session.abortTransaction();
+        return res.status(400).json({ mensaje: err.message });
       }
     }
 

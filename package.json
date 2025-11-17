@@ -5,7 +5,13 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:sync": "npm --prefix frontend run build:sync",
+    "deploy:frontend": "cd frontend && netlify deploy --prod --dir=dist",
+    "lint": "eslint . --ext .js,.jsx",
+    "test": "jest"
   },
   "keywords": [
     "heladeria",
@@ -26,8 +32,11 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.22",
+    "eslint": "^9.39.1",
+    "jest": "^30.2.0",
     "nodemon": "^3.1.11",
     "postcss": "^8.5.6",
+    "supertest": "^7.1.4",
     "tailwindcss": "^4.1.17"
   }
 }
