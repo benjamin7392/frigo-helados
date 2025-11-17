@@ -14,7 +14,7 @@ export default function Login() {
 
   const testConnection = async () => {
     setTestingConnection(true);
-    const apiUrl = 'http://192.168.1.42:4000/api';
+    const apiUrl = 'https://frigo-helados.onrender.com/api';
     
     console.log('🧪 Probando conexión a:', apiUrl);
     toast.loading('Probando conexión...', { id: 'test' });
@@ -139,7 +139,7 @@ export default function Login() {
           <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
             <p className="text-xs text-blue-800 font-semibold mb-1">🔗 API URL:</p>
             <p className="text-xs text-blue-600 font-mono break-all">
-              http://192.168.1.42:4000/api
+              https://frigo-helados.onrender.com/api
             </p>
             <p className="text-xs text-gray-500 mt-2">
               📍 Accediendo desde: {window.location.hostname}

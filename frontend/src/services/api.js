@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// IP FIJA - NO CAMBIAR
-const API_URL = 'http://192.168.1.42:4000/api';
+// URL DEL SERVIDOR EN LA NUBE
+const API_URL = 'https://frigo-helados.onrender.com/api';
 
 // Logs detallados para debugging
 console.log('========================================');
