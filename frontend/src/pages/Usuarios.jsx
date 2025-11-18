@@ -258,6 +258,8 @@ function UserModal({ user, onClose, onSave }) {
               >
                 <option value="vendedor">Vendedor</option>
                 <option value="admin">Admin</option>
+                <option value="empleado">Empleado</option>
+                <option value="cadete">Cadete</option>
               </select>
             </div>
 
