@@ -40,7 +40,7 @@ export default function Login() {
     setLoading(true);
 
     console.log('🚀 Formulario de login enviado');
-    console.log('API URL:', import.meta.env.VITE_API_URL);
+    console.log('API URL:', 'https://frigo-helados.onrender.com/api');
 
     try {
       await login(email, password);
@@ -56,7 +56,7 @@ export default function Login() {
         errorMessage = error.response?.data?.mensaje || `Error ${error.response.status}: ${error.response.statusText}`;
       } else if (error.request) {
         // No hubo respuesta del servidor
-        errorMessage = `❌ No se puede conectar al servidor. Verifica: Backend corriendo, misma red WiFi, IP: ${import.meta.env.VITE_API_URL}`;
+        errorMessage = `❌ No se puede conectar al servidor. Verifica que el backend en la nube esté activo: https://frigo-helados.onrender.com/api`;
       } else {
         errorMessage = error.message;
       }

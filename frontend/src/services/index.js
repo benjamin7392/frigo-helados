@@ -144,6 +144,11 @@ export const userService = {
     const response = await api.delete(`/usuarios/${id}`);
     return response.data;
   },
+
+  register: async (userData) => {
+    const response = await api.post('/usuarios/registro', userData);
+    return response.data;
+  },
 };
 
 // Configuración

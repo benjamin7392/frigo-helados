@@ -25,16 +25,32 @@ export default function Layout() {
     navigate('/login');
   };
 
-  const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Productos', href: '/productos', icon: Package },
-    { name: 'Ventas', href: '/ventas', icon: ShoppingCart },
-    { name: 'Movimientos', href: '/movimientos', icon: TrendingUp },
-  ];
-
+  // Menú dinámico según rol
+  let navigation = [];
   if (user?.rol === 'admin') {
-    navigation.push({ name: 'Usuarios', href: '/usuarios', icon: Users });
-    navigation.push({ name: 'Configuración', href: '/configuracion', icon: Settings });
+    navigation = [
+      { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+      { name: 'Productos', href: '/productos', icon: Package },
+      { name: 'Ventas', href: '/ventas', icon: ShoppingCart },
+      { name: 'Movimientos', href: '/movimientos', icon: TrendingUp },
+      { name: 'Usuarios', href: '/usuarios', icon: Users },
+      { name: 'Configuración', href: '/configuracion', icon: Settings },
+      { name: 'Reportes', href: '/reportes', icon: TrendingUp },
+      { name: 'Asistencia', href: '/asistencia', icon: LogOut },
+    ];
+  } else if (user?.rol === 'empleado') {
+    navigation = [
+      { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+      { name: 'Productos', href: '/productos', icon: Package },
+      { name: 'Ventas', href: '/ventas', icon: ShoppingCart },
+      { name: 'Movimientos', href: '/movimientos', icon: TrendingUp },
+      { name: 'Cierre de Turno', href: '/cierre-turno', icon: Settings },
+      { name: 'Asistencia', href: '/asistencia', icon: LogOut },
+    ];
+  } else if (user?.rol === 'cadete') {
+    navigation = [
+      { name: 'Asistencia', href: '/asistencia', icon: LogOut },
+    ];
   }
 
   return (

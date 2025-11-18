@@ -154,6 +154,7 @@ function UserModal({ user, onClose, onSave }) {
     user || {
       nombre: '',
       email: '',
+      password: '',
       rol: 'vendedor',
       activo: true,
     }
@@ -166,10 +167,24 @@ function UserModal({ user, onClose, onSave }) {
 
     try {
       if (user) {
-        await userService.update(user._id, formData);
+        // Si se está editando, no se permite cambiar la contraseña aquí
+        const { password, ...updateData } = formData;
+        await userService.update(user._id, updateData);
         toast.success('Usuario actualizado');
       } else {
-        toast.info('La funcionalidad de crear usuarios está en desarrollo');
+        // Crear usuario nuevo
+        if (!formData.password || formData.password.length < 6) {
+          toast.error('La contraseña debe tener al menos 6 caracteres');
+          setLoading(false);
+          return;
+        }
+        await userService.register({
+          nombre: formData.nombre,
+          email: formData.email,
+          password: formData.password,
+          rol: formData.rol
+        });
+        toast.success('Usuario creado correctamente');
       }
       onSave();
     } catch (error) {
@@ -213,6 +228,23 @@ function UserModal({ user, onClose, onSave }) {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
+
+            {!user && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Contraseña *
+                </label>
+                <input
+                  type="password"
+                  required
+                  minLength={6}
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</p>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

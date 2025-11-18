@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
@@ -10,6 +11,10 @@ import Ventas from './pages/Ventas';
 import Movimientos from './pages/Movimientos';
 import Usuarios from './pages/Usuarios';
 import Configuracion from './pages/Configuracion';
+// Nuevos módulos sugeridos
+// import CierreTurno from './pages/CierreTurno'; // trigger netlify redeploy
+// import Asistencia from './pages/Asistencia';
+// import Reportes from './pages/Reportes';
 
 function App() {
   return (
@@ -21,32 +26,66 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute roles={['admin', 'empleado', 'cadete']}>
                 <Layout />
               </ProtectedRoute>
             }
           >
             <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="productos" element={<Productos />} />
-            <Route path="ventas" element={<Ventas />} />
-            <Route path="movimientos" element={<Movimientos />} />
-            <Route
-              path="usuarios"
-              element={
-                <ProtectedRoute adminOnly>
-                  <Usuarios />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="configuracion"
-              element={
-                <ProtectedRoute adminOnly>
-                  <Configuracion />
-                </ProtectedRoute>
-              }
-            />
+            {/* Dashboard: admin y empleado */}
+            <Route path="dashboard" element={
+              <ProtectedRoute roles={['admin', 'empleado']}>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            {/* Ventas: admin y empleado */}
+            <Route path="ventas" element={
+              <ProtectedRoute roles={['admin', 'empleado']}>
+                <Ventas />
+              </ProtectedRoute>
+            } />
+            {/* Inventario: admin (CRUD), empleado (solo lectura) */}
+            <Route path="productos" element={
+              <ProtectedRoute roles={['admin', 'empleado']}>
+                <Productos />
+              </ProtectedRoute>
+            } />
+            {/* Movimientos: admin y empleado */}
+            <Route path="movimientos" element={
+              <ProtectedRoute roles={['admin', 'empleado']}>
+                <Movimientos />
+              </ProtectedRoute>
+            } />
+            {/* Cierre de turno: solo empleado */}
+            {/* <Route path="cierre-turno" element={
+              <ProtectedRoute roles={['empleado']}>
+                <CierreTurno />
+              </ProtectedRoute>
+            } /> */}
+            {/* Asistencia: todos los roles */}
+            {/* <Route path="asistencia" element={
+              <ProtectedRoute roles={['admin', 'empleado', 'cadete']}>
+                <Asistencia />
+              </ProtectedRoute>
+            } /> */}
+            {/* Usuarios: solo admin */}
+            <Route path="usuarios" element={
+              <ProtectedRoute roles={['admin']}>
+                <Usuarios />
+              </ProtectedRoute>
+            } />
+            {/* Configuración: solo admin */}
+            <Route path="configuracion" element={
+              <ProtectedRoute roles={['admin']}>
+                <Configuracion />
+              </ProtectedRoute>
+            } />
+            {/* Reportes: solo admin */}
+            {/* <Route path="reportes" element={
+              <ProtectedRoute roles={['admin']}>
+                <Reportes />
+              </ProtectedRoute>
+            } /> */}
           </Route>
         </Routes>
       </BrowserRouter>
