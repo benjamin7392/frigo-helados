@@ -11,11 +11,28 @@ app.use((req, res, next) => {
   next();
 });
 
-// Configurar CORS - permitir todos los orígenes en desarrollo
+
+// Configurar CORS - permitir orígenes de desarrollo y producción
+const allowedOrigins = [
+  'https://heladeria-frigo.netlify.app',
+  'https://frigo-helados.netlify.app',
+  'capacitor://localhost',
+  'ionic://localhost',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:3000'
+];
+
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://heladeria-frigo.netlify.app', 'capacitor://localhost', 'ionic://localhost']
-    : '*',
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (como Postman) o si está en la lista
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS: ' + origin));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
