@@ -19,6 +19,18 @@ const usuariosPrueba = [
     email: 'vendedor@frigo.com',
     password: '123456',
     rol: 'vendedor'
+  },
+  {
+    nombre: 'Lucía Empleada',
+    email: 'empleada@frigo.com',
+    password: '123456',
+    rol: 'empleado'
+  },
+  {
+    nombre: 'Carlos Cadete',
+    email: 'cadete@frigo.com',
+    password: '123456',
+    rol: 'cadete'
   }
 ];
 
