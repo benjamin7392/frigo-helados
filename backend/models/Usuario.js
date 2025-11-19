@@ -19,9 +19,13 @@ const usuarioSchema = new mongoose.Schema({
     required: [true, 'La contraseña es obligatoria'],
     minlength: 6
   },
+  telefono: {
+    type: String,
+    trim: true
+  },
   rol: {
     type: String,
-    enum: ['admin', 'vendedor'],
+    enum: ['admin', 'vendedor', 'empleado', 'cadete'],
     default: 'vendedor'
   },
   activo: {

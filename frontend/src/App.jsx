@@ -12,7 +12,7 @@ import Movimientos from './pages/Movimientos';
 import Usuarios from './pages/Usuarios';
 import Configuracion from './pages/Configuracion';
 // Nuevos módulos sugeridos
-// import CierreTurno from './pages/CierreTurno'; // trigger netlify redeploy
+// import CierreTurno from './pages/CierreTurno'; // trigger netlify redeploy 2
 // import Asistencia from './pages/Asistencia';
 // import Reportes from './pages/Reportes';
 
