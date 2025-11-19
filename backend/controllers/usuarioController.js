@@ -11,7 +11,7 @@ const generarToken = (id) => {
 // @access  Public (solo para el primer admin, luego se protege)
 exports.registrarUsuario = async (req, res) => {
   try {
-    const { nombre, email, password, rol } = req.body;
+    const { nombre, email, password, telefono, rol } = req.body;
 
     // Verificar si el usuario ya existe
     const usuarioExiste = await Usuario.findOne({ email });
@@ -20,12 +20,13 @@ exports.registrarUsuario = async (req, res) => {
     }
 
     // Crear usuario
-    const usuario = await Usuario.create({ nombre, email, password, rol });
+    const usuario = await Usuario.create({ nombre, email, password, telefono, rol });
 
     res.status(201).json({
       _id: usuario._id,
       nombre: usuario.nombre,
       email: usuario.email,
+      telefono: usuario.telefono,
       rol: usuario.rol,
       token: generarToken(usuario._id)
     });
@@ -94,7 +95,7 @@ exports.obtenerUsuarios = async (req, res) => {
 // @access  Private/Admin
 exports.actualizarUsuario = async (req, res) => {
   try {
-    const { nombre, email, rol, activo } = req.body;
+    const { nombre, email, telefono, rol, activo } = req.body;
     
     const usuario = await Usuario.findById(req.params.id);
     if (!usuario) {
@@ -103,6 +104,7 @@ exports.actualizarUsuario = async (req, res) => {
 
     usuario.nombre = nombre || usuario.nombre;
     usuario.email = email || usuario.email;
+    usuario.telefono = telefono || usuario.telefono;
     usuario.rol = rol || usuario.rol;
     usuario.activo = activo !== undefined ? activo : usuario.activo;
 
@@ -111,6 +113,7 @@ exports.actualizarUsuario = async (req, res) => {
       _id: usuarioActualizado._id,
       nombre: usuarioActualizado.nombre,
       email: usuarioActualizado.email,
+      telefono: usuarioActualizado.telefono,
       rol: usuarioActualizado.rol,
       activo: usuarioActualizado.activo
     });
