@@ -12,6 +12,7 @@ router.post('/entrada', auth.proteger, jornadaController.marcarEntrada);
 router.post('/salida', auth.proteger, jornadaController.marcarSalida);
 
 // Admin puede ver jornadas de cualquier usuario, empleados solo las propias
-router.get('/:usuarioId?', auth.proteger, jornadaController.obtenerJornadas);
+router.get('/', auth.proteger, jornadaController.obtenerJornadas); // sin usuarioId
+router.get('/:usuarioId', auth.proteger, jornadaController.obtenerJornadas); // con usuarioId
 
 module.exports = router;
