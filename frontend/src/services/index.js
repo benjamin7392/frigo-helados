@@ -1,3 +1,22 @@
+// Jornadas (Entradas/Salidas)
+export const jornadaService = {
+  marcarEntrada: async () => {
+    const response = await api.post('/jornadas/entrada');
+    return response.data;
+  },
+  marcarSalida: async () => {
+    const response = await api.post('/jornadas/salida');
+    return response.data;
+  },
+  getMisJornadas: async () => {
+    const response = await api.get('/jornadas');
+    return response.data;
+  },
+  getResumen: async () => {
+    const response = await api.get('/jornadas/resumen/all');
+    return response.data;
+  },
+};
 import api from './api';
 
 // Autenticación

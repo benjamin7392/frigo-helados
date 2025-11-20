@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import EmpleadoHome from './pages/EmpleadoHome';
 import Productos from './pages/ProductosNuevo';
 import Ventas from './pages/Ventas';
 import Movimientos from './pages/Movimientos';
@@ -31,10 +32,17 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            {/* Dashboard: admin y empleado */}
+            {/* Home principal: empleados y cadetes ven EmpleadoHome, admin ve Dashboard */}
+            <Route index element={
+              <ProtectedRoute roles={['admin', 'empleado', 'cadete']}>
+                {({ user }) =>
+                  user?.rol === 'admin' ? <Dashboard /> : <EmpleadoHome />
+                }
+              </ProtectedRoute>
+            } />
+            {/* Dashboard: solo admin */}
             <Route path="dashboard" element={
-              <ProtectedRoute roles={['admin', 'empleado']}>
+              <ProtectedRoute roles={['admin']}>
                 <Dashboard />
               </ProtectedRoute>
             } />

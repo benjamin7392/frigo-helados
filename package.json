@@ -5,13 +5,12 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "install:all": "npm --prefix backend install && npm --prefix frontend install",
     "build:frontend": "npm --prefix frontend run build",
     "build:sync": "npm --prefix frontend run build:sync",
     "deploy:frontend": "cd frontend && netlify deploy --prod --dir=dist",
-    "lint": "eslint . --ext .js,.jsx",
-    "test": "jest"
+    "lint": "eslint . --ext .js,.jsx"
   },
   "keywords": [
     "heladeria",
@@ -26,7 +25,7 @@
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0",
+    "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.4"
   },

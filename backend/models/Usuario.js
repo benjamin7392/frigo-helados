@@ -9,10 +9,10 @@ const usuarioSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    required: [true, 'El email es obligatorio'],
     unique: true,
     lowercase: true,
-    trim: true,
-    sparse: true // Permite múltiples usuarios sin email
+    trim: true
   },
   password: {
     type: String,

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// URL DEL SERVIDOR EN LA NUBE
-const API_URL = 'https://frigo-helados.onrender.com/api';
+// URL dinámica según entorno
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Logs detallados para debugging
 console.log('========================================');
