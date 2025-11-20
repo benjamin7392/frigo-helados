@@ -8,10 +8,21 @@ const generarToken = (id) => {
 
 // @desc    Registrar nuevo usuario
 // @route   POST /api/usuarios/registro
-// @access  Public (solo para el primer admin, luego se protege)
+// @access  Private/Admin (solo admin puede crear usuarios)
 exports.registrarUsuario = async (req, res) => {
   try {
+    // Solo admin puede crear usuarios
+    if (!req.usuario || req.usuario.rol !== 'admin') {
+      return res.status(403).json({ mensaje: 'Solo el administrador puede crear usuarios.' });
+    }
+
     const { nombre, email, password, telefono, rol } = req.body;
+
+    // Validar rol permitido
+    const rolesPermitidos = ['admin', 'vendedor', 'empleado', 'cadete'];
+    if (!rolesPermitidos.includes(rol)) {
+      return res.status(400).json({ mensaje: 'Rol no permitido. Debe ser admin, vendedor, empleado o cadete.' });
+    }
 
     // Verificar si el usuario ya existe
     const usuarioExiste = await Usuario.findOne({ email });
@@ -27,8 +38,7 @@ exports.registrarUsuario = async (req, res) => {
       nombre: usuario.nombre,
       email: usuario.email,
       telefono: usuario.telefono,
-      rol: usuario.rol,
-      token: generarToken(usuario._id)
+      rol: usuario.rol
     });
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al registrar usuario', error: error.message });

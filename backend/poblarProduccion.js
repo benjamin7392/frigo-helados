@@ -12,26 +12,47 @@ mongoose.connect(process.env.MONGO_URI)
     const Producto = require('./models/Producto');
     
     // Crear usuarios si no existen
-    const adminExists = await Usuario.findOne({ email: 'admin@frigo.com' });
-    if (!adminExists) {
-      await Usuario.create({
+    const usuariosAInsertar = [
+      {
         nombre: 'Administrador',
         email: 'admin@frigo.com',
         password: '123456',
-        rol: 'admin'
-      });
-      console.log('✅ Usuario admin creado');
-    }
-    
-    const vendedorExists = await Usuario.findOne({ email: 'vendedor@frigo.com' });
-    if (!vendedorExists) {
-      await Usuario.create({
+        rol: 'admin',
+        log: '✅ Usuario admin creado'
+      },
+      {
         nombre: 'Vendedor',
         email: 'vendedor@frigo.com',
         password: '123456',
-        rol: 'vendedor'
-      });
-      console.log('✅ Usuario vendedor creado');
+        rol: 'vendedor',
+        log: '✅ Usuario vendedor creado'
+      },
+      {
+        nombre: 'Empleada',
+        email: 'empleada@frigo.com',
+        password: '123456',
+        rol: 'empleado',
+        log: '✅ Usuario empleada creado'
+      },
+      {
+        nombre: 'Cadete',
+        email: 'cadete@frigo.com',
+        password: '123456',
+        rol: 'cadete',
+        log: '✅ Usuario cadete creado'
+      }
+    ];
+    for (const usuario of usuariosAInsertar) {
+      const existe = await Usuario.findOne({ email: usuario.email });
+      if (!existe) {
+        await Usuario.create({
+          nombre: usuario.nombre,
+          email: usuario.email,
+          password: usuario.password,
+          rol: usuario.rol
+        });
+        console.log(usuario.log);
+      }
     }
     
     // Crear productos si no existen
@@ -75,6 +96,11 @@ mongoose.connect(process.env.MONGO_URI)
     }
     
     console.log('✅ Base de datos poblada correctamente');
+    console.log('\n📝 Credenciales de acceso:');
+    console.log('   Admin: admin@frigo.com / 123456');
+    console.log('   Vendedor: vendedor@frigo.com / 123456');
+    console.log('   Empleada: empleada@frigo.com / 123456');
+    console.log('   Cadete: cadete@frigo.com / 123456');
     process.exit(0);
   })
   .catch(err => {
