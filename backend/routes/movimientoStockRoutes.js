@@ -5,10 +5,20 @@ const {
   obtenerMovimientosPorProducto,
   obtenerEstadisticas
 } = require('../controllers/movimientoStockController');
-const { proteger } = require('../middleware/authMiddleware');
+const { proteger, admin } = require('../middleware/authMiddleware');
 
-router.get('/', proteger, obtenerMovimientos);
-router.get('/estadisticas', proteger, obtenerEstadisticas);
-router.get('/producto/:id', proteger, obtenerMovimientosPorProducto);
+// Solo admin y empleados pueden ver movimientos de stock
+router.get('/', proteger, (req, res, next) => {
+  if (req.usuario.rol === 'admin' || req.usuario.rol === 'empleado') return next();
+  return res.status(403).json({ mensaje: 'Solo admin o empleados pueden ver movimientos de stock' });
+}, obtenerMovimientos);
+router.get('/estadisticas', proteger, (req, res, next) => {
+  if (req.usuario.rol === 'admin' || req.usuario.rol === 'empleado') return next();
+  return res.status(403).json({ mensaje: 'Solo admin o empleados pueden ver estadísticas de stock' });
+}, obtenerEstadisticas);
+router.get('/producto/:id', proteger, (req, res, next) => {
+  if (req.usuario.rol === 'admin' || req.usuario.rol === 'empleado') return next();
+  return res.status(403).json({ mensaje: 'Solo admin o empleados pueden ver movimientos de stock' });
+}, obtenerMovimientosPorProducto);
 
 module.exports = router;

@@ -1,3 +1,20 @@
+// Permite solo a empleados (y no admin/cadete)
+exports.soloEmpleado = (req, res, next) => {
+  if (req.usuario && req.usuario.rol === 'empleado') {
+    next();
+  } else {
+    res.status(403).json({ mensaje: 'Acceso denegado. Se requiere rol de empleado' });
+  }
+};
+
+// Permite solo a cadetes
+exports.soloCadete = (req, res, next) => {
+  if (req.usuario && req.usuario.rol === 'cadete') {
+    next();
+  } else {
+    res.status(403).json({ mensaje: 'Acceso denegado. Se requiere rol de cadete' });
+  }
+};
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
 

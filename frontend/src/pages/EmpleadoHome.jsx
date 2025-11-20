@@ -97,6 +97,7 @@ export default function EmpleadoHome() {
                 <th className="p-2">Entrada</th>
                 <th className="p-2">Salida</th>
                 <th className="p-2">Horas</th>
+                <th className="p-2">Pago</th>
               </tr>
             </thead>
             <tbody>
@@ -106,6 +107,13 @@ export default function EmpleadoHome() {
                   <td className="p-2">{j.entrada ? new Date(j.entrada).toLocaleTimeString() : '-'}</td>
                   <td className="p-2">{j.salida ? new Date(j.salida).toLocaleTimeString() : '-'}</td>
                   <td className="p-2">{j.horasTrabajadas ? j.horasTrabajadas.toFixed(2) : '-'}</td>
+                  <td className="p-2">
+                    {j.pagado ? (
+                      <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Pagado</span>
+                    ) : (
+                      <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">Pendiente</span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
