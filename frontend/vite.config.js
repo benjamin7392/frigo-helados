@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { resolve } from 'path'
+import fs from 'fs'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -50,6 +52,16 @@ export default defineConfig({
           }
         ]
       }
-    })
-  ],
+    }),
+    {
+      name: 'copy-redirects',
+      closeBundle() {
+        const src = resolve(__dirname, 'public/_redirects');
+        const dest = resolve(__dirname, 'dist/_redirects');
+        if (fs.existsSync(src)) {
+          fs.copyFileSync(src, dest);
+        }
+      }
+    }
+  ]
 })
