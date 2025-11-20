@@ -10,6 +10,8 @@ const generarToken = (id) => {
 // @route   POST /api/usuarios/registro
 // @access  Private/Admin (solo admin puede crear usuarios)
 exports.registrarUsuario = async (req, res) => {
+    console.log('========== NUEVO REGISTRO USUARIO =========');
+    console.log('Body recibido:', req.body);
   try {
     // Solo admin puede crear usuarios
     if (!req.usuario || req.usuario.rol !== 'admin') {
@@ -49,6 +51,7 @@ exports.registrarUsuario = async (req, res) => {
       rol: usuario.rol
     });
   } catch (error) {
+      console.error('❌ Error al registrar usuario:', error);
     res.status(500).json({ mensaje: 'Error al registrar usuario', error: error.message });
   }
 };

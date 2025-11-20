@@ -42,8 +42,9 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGO_URI)
+// Conexión a MongoDB (forzada, sin dotenv)
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://admin:frigo123@cluster0.uxbpl3x.mongodb.net/heladeria-frigo';
+mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ Conectado a MongoDB'))
   .catch(err => console.error('❌ Error de conexión:', err));
 
@@ -53,6 +54,7 @@ const productoRoutes = require('./routes/productoRoutes');
 const ventaRoutes = require('./routes/ventaRoutes');
 const movimientoStockRoutes = require('./routes/movimientoStockRoutes');
 const configuracionRoutes = require('./routes/configuracion');
+const jornadaRoutes = require('./routes/jornadaRoutes');
 
 // Ruta de prueba
 app.get('/', (req, res) => res.send('API Heladería Frigo funcionando'));
@@ -63,6 +65,7 @@ app.use('/api/productos', productoRoutes);
 app.use('/api/ventas', ventaRoutes);
 app.use('/api/movimientos-stock', movimientoStockRoutes);
 app.use('/api/configuracion', configuracionRoutes);
+app.use('/api/jornadas', jornadaRoutes);
 
 // Manejo de errores 404
 app.use((req, res) => {

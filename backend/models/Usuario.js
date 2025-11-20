@@ -11,7 +11,8 @@ const usuarioSchema = new mongoose.Schema({
     type: String,
     unique: true,
     lowercase: true,
-    trim: true
+    trim: true,
+    sparse: true // Permite múltiples usuarios sin email
   },
   password: {
     type: String,
