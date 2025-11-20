@@ -5,8 +5,9 @@ import toast from 'react-hot-toast';
 import { IceCream, LogIn } from 'lucide-react';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // Credenciales de prueba (puedes cambiarlas por las de tu base de datos)
+  const [email, setEmail] = useState('admin@prueba.com');
+  const [password, setPassword] = useState('admin123');
   const [loading, setLoading] = useState(false);
   const [testingConnection, setTestingConnection] = useState(false);
   const { login } = useAuth();

@@ -14,7 +14,7 @@ import Usuarios from './pages/Usuarios';
 import Configuracion from './pages/Configuracion';
 // Nuevos módulos sugeridos
 // import CierreTurno from './pages/CierreTurno'; // trigger netlify redeploy 2
-// import Asistencia from './pages/Asistencia';
+import Asistencia from './pages/Asistencia';
 // import Reportes from './pages/Reportes';
 
 function App() {
@@ -71,11 +71,11 @@ function App() {
               </ProtectedRoute>
             } /> */}
             {/* Asistencia: todos los roles */}
-            {/* <Route path="asistencia" element={
+            <Route path="asistencia" element={
               <ProtectedRoute roles={['admin', 'empleado', 'cadete']}>
                 <Asistencia />
               </ProtectedRoute>
-            } /> */}
+            } />
             {/* Usuarios: solo admin */}
             <Route path="usuarios" element={
               <ProtectedRoute roles={['admin']}>
