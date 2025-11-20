@@ -156,7 +156,6 @@ function UserModal({ user, onClose, onSave }) {
   const [formData, setFormData] = useState(
     user || {
       nombre: '',
-      email: '',
       password: '',
       telefono: '',
       rol: 'vendedor',
@@ -169,7 +168,6 @@ function UserModal({ user, onClose, onSave }) {
     if (user) {
       setFormData({
         nombre: user.nombre || '',
-        email: user.email || '',
         password: '',
         telefono: user.telefono || '',
         rol: user.rol || 'vendedor',
@@ -197,7 +195,6 @@ function UserModal({ user, onClose, onSave }) {
         }
         await userService.register({
           nombre: formData.nombre,
-          email: formData.email,
           password: formData.password,
           telefono: formData.telefono,
           rol: formData.rol
@@ -234,18 +231,7 @@ function UserModal({ user, onClose, onSave }) {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email *
-              </label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+
 
             {!user && (
               <div>

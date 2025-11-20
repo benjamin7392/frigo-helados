@@ -16,7 +16,7 @@ exports.registrarUsuario = async (req, res) => {
       return res.status(403).json({ mensaje: 'Solo el administrador puede crear usuarios.' });
     }
 
-    const { nombre, email, password, telefono, rol } = req.body;
+    const { nombre, password, telefono, rol } = req.body;
 
     // Validar rol permitido
     const rolesPermitidos = ['admin', 'vendedor', 'empleado', 'cadete'];
@@ -24,14 +24,22 @@ exports.registrarUsuario = async (req, res) => {
       return res.status(400).json({ mensaje: 'Rol no permitido. Debe ser admin, vendedor, empleado o cadete.' });
     }
 
-    // Verificar si el usuario ya existe
-    const usuarioExiste = await Usuario.findOne({ email });
-    if (usuarioExiste) {
-      return res.status(400).json({ mensaje: 'El usuario ya existe' });
+    // Si se provee email, verificar si ya existe
+    if (req.body.email) {
+      const usuarioExiste = await Usuario.findOne({ email: req.body.email });
+      if (usuarioExiste) {
+        return res.status(400).json({ mensaje: 'El email ya está en uso' });
+      }
     }
 
-    // Crear usuario
-    const usuario = await Usuario.create({ nombre, email, password, telefono, rol });
+    // Crear usuario (email opcional)
+    const usuario = await Usuario.create({
+      nombre,
+      email: req.body.email,
+      password,
+      telefono,
+      rol
+    });
 
     res.status(201).json({
       _id: usuario._id,
@@ -50,10 +58,15 @@ exports.registrarUsuario = async (req, res) => {
 // @access  Public
 exports.loginUsuario = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { nombre, email, password } = req.body;
 
-    // Verificar usuario
-    const usuario = await Usuario.findOne({ email, activo: true });
+    // Permitir login por email o por nombre (si no hay email)
+    let usuario = null;
+    if (email) {
+      usuario = await Usuario.findOne({ email, activo: true });
+    } else if (nombre) {
+      usuario = await Usuario.findOne({ nombre, activo: true });
+    }
     if (!usuario) {
       return res.status(401).json({ mensaje: 'Credenciales inválidas' });
     }
@@ -113,10 +126,11 @@ exports.actualizarUsuario = async (req, res) => {
     }
 
     usuario.nombre = nombre || usuario.nombre;
-    usuario.email = email || usuario.email;
     usuario.telefono = telefono || usuario.telefono;
     usuario.rol = rol || usuario.rol;
     usuario.activo = activo !== undefined ? activo : usuario.activo;
+    // Solo actualizar email si se provee
+    if (email) usuario.email = email;
 
     const usuarioActualizado = await usuario.save();
     res.json({
