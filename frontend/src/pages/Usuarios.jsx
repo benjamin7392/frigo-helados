@@ -156,6 +156,7 @@ function UserModal({ user, onClose, onSave }) {
   const [formData, setFormData] = useState(
     user || {
       nombre: '',
+      email: '',
       password: '',
       telefono: '',
       rol: 'vendedor',
@@ -168,6 +169,7 @@ function UserModal({ user, onClose, onSave }) {
     if (user) {
       setFormData({
         nombre: user.nombre || '',
+        email: user.email || '',
         password: '',
         telefono: user.telefono || '',
         rol: user.rol || 'vendedor',
@@ -184,7 +186,7 @@ function UserModal({ user, onClose, onSave }) {
       if (user) {
         // Si se está editando, no se permite cambiar la contraseña aquí
         const { password, ...updateData } = formData;
-        await userService.update(user._id, updateData);
+        await userService.update(user._id, { ...updateData, email: formData.email });
         toast.success('Usuario actualizado');
       } else {
         // Crear usuario nuevo
@@ -193,8 +195,14 @@ function UserModal({ user, onClose, onSave }) {
           setLoading(false);
           return;
         }
+        if (!formData.email) {
+          toast.error('El email es obligatorio');
+          setLoading(false);
+          return;
+        }
         await userService.register({
           nombre: formData.nombre,
+          email: formData.email,
           password: formData.password,
           telefono: formData.telefono,
           rol: formData.rol
@@ -228,6 +236,19 @@ function UserModal({ user, onClose, onSave }) {
                 value={formData.nombre}
                 onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email *
+              </label>
+              <input
+                type="email"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                placeholder="usuario@email.com"
               />
             </div>
 
