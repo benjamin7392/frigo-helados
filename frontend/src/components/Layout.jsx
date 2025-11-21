@@ -31,10 +31,11 @@ export default function Layout() {
     navigation = [
       { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
       { name: 'Productos', href: '/productos', icon: Package },
+      { name: 'Inventario', href: '/inventario', icon: Package },
       { name: 'Ventas', href: '/ventas', icon: ShoppingCart },
       { name: 'Movimientos', href: '/movimientos', icon: TrendingUp },
       { name: 'Usuarios', href: '/usuarios', icon: Users },
-      { name: 'Configuración', href: '/configuracion', icon: Settings },
+      { name: 'Configuraci\u00f3n', href: '/configuracion', icon: Settings },
       { name: 'Reportes', href: '/reportes', icon: TrendingUp },
       { name: 'Asistencia', href: '/asistencia', icon: LogOut },
     ];
@@ -42,6 +43,7 @@ export default function Layout() {
     navigation = [
       { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
       { name: 'Productos', href: '/productos', icon: Package },
+      { name: 'Inventario', href: '/inventario', icon: Package },
       { name: 'Ventas', href: '/ventas', icon: ShoppingCart },
       { name: 'Movimientos', href: '/movimientos', icon: TrendingUp },
       { name: 'Cierre de Turno', href: '/cierre-turno', icon: Settings },

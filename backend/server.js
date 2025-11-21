@@ -53,6 +53,7 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 const productoRoutes = require('./routes/productoRoutes');
 const ventaRoutes = require('./routes/ventaRoutes');
 const movimientoStockRoutes = require('./routes/movimientoStockRoutes');
+const inventarioRoutes = require('./routes/inventarioRoutes');
 const configuracionRoutes = require('./routes/configuracion');
 const jornadaRoutes = require('./routes/jornadaRoutes');
 
@@ -66,6 +67,7 @@ app.use('/api/ventas', ventaRoutes);
 app.use('/api/movimientos-stock', movimientoStockRoutes);
 app.use('/api/configuracion', configuracionRoutes);
 app.use('/api/jornadas', jornadaRoutes);
+app.use('/api/inventario', inventarioRoutes);
 
 // Manejo de errores 404
 app.use((req, res) => {

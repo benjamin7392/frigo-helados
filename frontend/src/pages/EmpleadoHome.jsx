@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { jornadaService } from '../services';
+import { jornadaService } from '../services/jornadaService';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 export default function EmpleadoHome() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [jornadas, setJornadas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [marcando, setMarcando] = useState(false);
@@ -18,7 +18,7 @@ export default function EmpleadoHome() {
   const cargarJornadas = async () => {
     setLoading(true);
     try {
-      const data = await jornadaService.getMisJornadas();
+      const data = await jornadaService.getMisJornadas(token);
       setJornadas(data);
     } catch (error) {
       toast.error('Error al cargar jornadas');
@@ -30,7 +30,7 @@ export default function EmpleadoHome() {
   const marcarEntrada = async () => {
     setMarcando(true);
     try {
-      await jornadaService.marcarEntrada();
+      await jornadaService.marcarEntrada(token);
       toast.success('Entrada marcada');
       cargarJornadas();
     } catch (e) {
@@ -43,7 +43,7 @@ export default function EmpleadoHome() {
   const marcarSalida = async () => {
     setMarcando(true);
     try {
-      await jornadaService.marcarSalida();
+      await jornadaService.marcarSalida(token);
       toast.success('Salida marcada');
       cargarJornadas();
     } catch (e) {

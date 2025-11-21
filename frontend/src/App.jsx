@@ -15,6 +15,7 @@ import Configuracion from './pages/Configuracion';
 // Nuevos módulos sugeridos
 // import CierreTurno from './pages/CierreTurno'; // trigger netlify redeploy 2
 import Asistencia from './pages/Asistencia';
+import Inventario from './pages/Inventario';
 // import Reportes from './pages/Reportes';
 
 function App() {
@@ -56,6 +57,11 @@ function App() {
             <Route path="productos" element={
               <ProtectedRoute roles={['admin', 'empleado']}>
                 <Productos />
+              </ProtectedRoute>
+            } />
+            <Route path="inventario" element={
+              <ProtectedRoute roles={['admin', 'empleado']}>
+                <Inventario />
               </ProtectedRoute>
             } />
             {/* Movimientos: admin y empleado */}
